@@ -35,6 +35,8 @@ module.exports = {
       'js': 'never',
       'vue': 'never'
     }],
+    // Warn if an import fails to resolve
+    'import/no-unresolved': ['error'],
     // allow optionalDependencies
     'import/no-extraneous-dependencies': ['error', {
       'optionalDependencies': ['test/unit/index.js']
