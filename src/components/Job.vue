@@ -43,7 +43,7 @@ h2 {
   text-align: left;
 }
 .board {
-  float: left;
+  /* float: left; */
   margin-right: 2em;
 }
 </style>

@@ -1,13 +1,16 @@
-import licenses from './data/licenses';
+import licenseList from './data/licenses';
 
-export const licenseList = licenses;
+export const licenses = licenseList.map((license, idx) => ({
+  ...license,
+  id: idx,
+}));
 
-export const licenseDict = licenses.reduce((dict, license, idx) => ({
+export const byId = licenses.reduce((dict, license, idx) => ({
   ...dict,
   [idx]: license,
 }), {});
 
-export const getLicense = id => licenseDict[id];
+export const getLicense = id => byId[id];
 
 export const byCategory = licenses.reduce((groups, license, idx) => ({
   ...groups,
@@ -60,8 +63,8 @@ export const jobs = [
 }));
 
 window.data = {
-  licenseList,
-  licenseDict,
+  licenses,
+  byId,
   byCategory,
   jobs,
   getLicense,

@@ -6,7 +6,7 @@
       class="category"
     >
       <h3 class="category-title" v-if="selectedCategory === category">
-        {{categoryLabel}}<span>: {{ licenseLabel }}</span>
+        {{ selectedCategory }}<span>: {{ licenseLabel }}</span>
       </h3>
       <div :class="[
         'licenses',
@@ -20,7 +20,8 @@
             { selected: isSelected(id) },
             { active: isActive(id) },
           ]"
-          @mouseover="select(category, id)"
+          @mouseover="selectLicense(id)"
+          @click="selectLicense(id)"
         />
       </div>
     </li>
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import categories from '../data/categories';
 import { getLicense } from '../data';
 
@@ -45,25 +47,30 @@ export default {
   data() {
     return {
       categories,
-      selectedLicense: null,
-      selectedCategory: '',
     };
   },
   computed: {
-    categoryLabel() {
-      return this.selectedCategory;
-    },
+    ...mapGetters([
+      'selectedLicense',
+      'selectedCategory',
+    ]),
     licenseLabel() {
-      const { name, skills } = this.selectedLicense;
+      const license = getLicense(this.selectedLicense);
+      if (!license) {
+        return '';
+      }
+      const { name, skills } = license;
       return skills && skills.length ?
         `${name} (${skills.join(', ')})` :
         name;
     },
   },
   methods: {
-    select(category, id) {
-      this.selectedCategory = category;
-      this.selectedLicense = getLicense(id);
+    ...mapActions([
+      'select',
+    ]),
+    selectLicense(id) {
+      this.select(getLicense(id));
     },
     isSelected(id) {
       return this.selectedLicense === getLicense(id);

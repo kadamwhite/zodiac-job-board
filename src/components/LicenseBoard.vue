@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import { getLicense } from '../data';
 
 const letters = 'ABCDEFGHIJKLMNOPQR';
@@ -35,13 +36,14 @@ export default {
     // Dictionary of cells to their corresponding license object
     'licenses',
   ],
-  data() {
-    return {
-      selectedLicense: null,
-      selectedCategory: '',
-    };
-  },
+  computed: mapGetters([
+    'selectedLicense',
+    'selectedCategory',
+  ]),
   methods: {
+    ...mapActions([
+      'select',
+    ]),
     letter: id => letters[id],
     cell(col, row) {
       return `${this.letter(col - 1)}${row}`;
@@ -50,19 +52,10 @@ export default {
       if (!license) {
         return false;
       }
-      console.log(this.selectedLicense);
       if (license.id === this.selectedLicense) {
         return true;
       }
       return false;
-    },
-    select(license) {
-      if (!license) {
-        return;
-      }
-      console.log(license);
-      this.selectedLicense = license.id;
-      this.selectedCategory = license.category;
     },
     hasLicense(col, row) {
       // returning license(cell) to a v-if caused an error, which this
@@ -79,11 +72,6 @@ export default {
       return this.hasLicense(col, row) ?
         getLicense(this.licenses[this.cell(col, row)]) :
         '';
-      // if (!this.licences[this.cell(col, row)]) {
-      //   return {};
-      // }
-      // Should only be called when we know that a cell hasLicense
-      // return this.licences[this.cell(col, row)];
     },
   },
 };
