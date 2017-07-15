@@ -2,15 +2,14 @@
   <div class="jobs">
     <h1>Job Boards</h1>
     <div v-for="job in jobs" :key="job.name">
-      <h2>{{job.name}}</h2>
-      <license-board :licenses="job.board" />
+      <job :name="job.name" :board="job.board" />
     </div>
   </div>
 </template>
 
 <script>
 import { jobs } from '../data';
-import LicenseBoard from './LicenseBoard';
+import Job from './Job';
 
 // eslint-disable-next-line
 // console.log(jobs);
@@ -18,7 +17,7 @@ import LicenseBoard from './LicenseBoard';
 export default {
   name: 'jobs',
   components: {
-    'license-board': LicenseBoard,
+    job: Job,
   },
   data() {
     return {

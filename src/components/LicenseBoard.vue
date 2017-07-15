@@ -1,24 +1,22 @@
 <template>
-  <div class="hello">
-    <table>
-      <tbody>
-        <tr v-for="row in 19" :key="row">
-          <td
-            v-for="col in 18"
-            :key="col"
-            :class="[
-              { license: hasLicense(col, row) },
-              licenseClass(col, row),
-            ]"
-          >
-            <div v-if="hasLicense(col, row)">
-              {{ license(col, row).name }}
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <table>
+    <tbody>
+      <tr v-for="row in 19" :key="row">
+        <td
+          v-for="col in 18"
+          :key="col"
+          :class="[
+            { license: hasLicense(col, row) },
+            licenseClass(col, row),
+          ]"
+        >
+          <div class="label">
+            {{ license(col, row).name }}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>
@@ -66,12 +64,16 @@ export default {
 table {
   font-size: 10px;
   border-collapse: collapse;
-  margin: auto;
+  /* margin: auto; */
 }
 
 td {
   width: 2em;
-  height: 2em;
+  vertical-align: center;
+}
+td .label {
+  height: 3em;
+  display: inline-block;
   vertical-align: center;
 }
 td.license {

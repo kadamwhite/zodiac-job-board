@@ -37,7 +37,7 @@ export const jobs = [
       return {
         ...board,
         ...license.board[job]
-          .split(/,/)
+          .split(/,\s*|\s+/)
           .map(cell => cell.trim())
           .reduce((cellsForLicense, cell) => {
             keys.push(cell);

@@ -10,7 +10,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Zodiac Job System',
+      name: 'Zodiac Job System License Boards',
+      component: Jobs,
+    },
+    {
+      path: '/hello',
+      name: 'Hello',
       component: Hello,
     },
     {

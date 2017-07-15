@@ -4,7 +4,7 @@
     <h2>License Categories</h2>
     <license-categories />
     <h2>License Boards</h2>
-    <jobs />
+
   </div>
 </template>
 

@@ -6,18 +6,20 @@
       class="category"
     >
       <h3 class="category-title" v-if="selectedCategory === category">
-        {{selectedCategory}}<span v-if="selectedLicense">:
-          {{ selectedLicense.name }}
-          <template v-if="selectedLicense.skills">
-            ({{ selectedLicense.skills.join(', ') }})
-          </template>
-        </span>
+        {{categoryLabel}}<span>: {{ licenseLabel }}</span>
       </h3>
-      <div class="licenses">
+      <div :class="[
+        'licenses',
+        { unused: hasNoActiveLicenses(ids) }
+      ]">
         <span
           v-for="id in ids"
           :key="`${category}${id}`"
-          :class="['license', { selected: selectedLicense === license(id) }]"
+          :class="[
+            'license',
+            { selected: isSelected(id) },
+            { active: isActive(id) },
+          ]"
           @mouseover="select(category, id)"
         />
       </div>
@@ -32,6 +34,14 @@ import { getLicense } from '../data';
 
 export default {
   name: 'license-categories',
+  props: {
+    active: {
+      // Array of licenses that should be considered "active"
+      default() {
+        return [];
+      },
+    },
+  },
   data() {
     return {
       categories,
@@ -39,11 +49,35 @@ export default {
       selectedCategory: '',
     };
   },
+  computed: {
+    categoryLabel() {
+      return this.selectedCategory;
+    },
+    licenseLabel() {
+      const { name, skills } = this.selectedLicense;
+      return skills && skills.length ?
+        `${name} (${skills.join(', ')})` :
+        name;
+    },
+  },
   methods: {
-    license: id => getLicense(id),
     select(category, id) {
       this.selectedCategory = category;
       this.selectedLicense = getLicense(id);
+    },
+    isSelected(id) {
+      return this.selectedLicense === getLicense(id);
+    },
+    isActive(id) {
+      return (this.active || []).includes(id);
+    },
+    hasNoActiveLicenses(ids) {
+      for (let i = 0; i < ids.length; i += 1) {
+        if (this.isActive(ids[i])) {
+          return false;
+        }
+      }
+      return true;
     },
   },
 };
@@ -70,6 +104,9 @@ ul {
   position: absolute;
   box-sizing: border-box;
   padding: 2px 5px 1px 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   height: 1.5em;
   margin: -1.5em 0 0 0;
   border: 1px solid black;
@@ -90,15 +127,25 @@ ul {
   display: block;
   height: 1em;
 }
+.licenses.unused {
+  height: 0.5em;
+}
 .license {
   cursor: default;
   display: inline-block;
+  vertical-align: top;
   border: 1px solid black;
   border-right: 0;
   height: 1em;
   width: 1em;
   overflow: hidden;
   transition: border-width 200px;
+}
+.licenses.unused .license {
+  height: 0.5em;
+}
+.license.active {
+  background: #555;
 }
 .license:last-child {
   border-right: 1px solid black;
