@@ -9,12 +9,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello,
-    },
-    {
-      path: '/jobs',
-      name: 'Jobs',
+      name: 'Job License Boards',
       component: Jobs,
     },
   ],
