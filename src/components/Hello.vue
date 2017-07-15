@@ -15,7 +15,7 @@ import LicenseCategories from './LicenseCategories';
 export default {
   name: 'hello',
   components: {
-    'jobs': Jobs,
+    jobs: Jobs,
     'license-categories': LicenseCategories,
   },
   data() {
