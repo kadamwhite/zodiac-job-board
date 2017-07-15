@@ -33,6 +33,9 @@ module.exports = {
         enforce: 'pre',
         include: [resolve('src'), resolve('test')],
         options: {
+          // emit all errors as warnings: this lets us see all issues in the
+          // dev console, but the presence of errors will not block rebuilds
+          emitWarning: true,
           formatter: require('eslint-friendly-formatter')
         }
       },

@@ -24,6 +24,12 @@ module.exports = {
   },
   // add your custom rules here
   'rules': {
+    'func-names': ['error', 'as-needed'],
+    'no-console': ['off'],
+    'no-unused-vars': ['warn', {
+      vars: 'all', args: 'after-used',
+    }],
+    'space-before-function-paren': ['error', 'never'],
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       'js': 'never',

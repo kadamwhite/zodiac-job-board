@@ -1,33 +1,25 @@
 <template>
-  <ul class="jobs">
-    <li v-for="job in jobs">
-      {{ job }}
-    </li>
-  </ul>
+  <div class="jobs">
+    <h1>Job Boards</h1>
+    <div v-for="job in jobs" :key="job.name">
+      <h2>{{job.name}}</h2>
+      <license-board :licenses="job.board" />
+    </div>
+  </div>
 </template>
 
 <script>
-import licenses from '../data/licenses';
+import { jobs } from '../data';
+import LicenseBoard from './LicenseBoard';
 
 // eslint-disable-next-line
-console.log(licenses);
-const jobs = [
-  'White Mage',
-  'Uhlan',
-  'Machinist',
-  'Red Battlemage',
-  'Knight',
-  'Monk',
-  'Time Battlemage',
-  'Foebreaker',
-  'Archer',
-  'Black Mage',
-  'Bushi',
-  'Shikari',
-];
+// console.log(jobs);
 
 export default {
   name: 'jobs',
+  components: {
+    'license-board': LicenseBoard,
+  },
   data() {
     return {
       jobs,
