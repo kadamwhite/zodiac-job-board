@@ -5,7 +5,7 @@ export const licenseList = licenses;
 export const licenseDict = licenses.reduce((dict, license, idx) => ({
   ...dict,
   [idx]: license,
-}));
+}), {});
 
 export const getLicense = id => licenseDict[id];
 

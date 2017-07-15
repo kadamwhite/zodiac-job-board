@@ -26,7 +26,7 @@ import { getLicense } from '../data';
 
 const letters = 'ABCDEFGHIJKLMNOPQR';
 export default {
-  name: 'license-board',
+  name: 'license-boards',
   props: [
     // Dictionary of cells to their corresponding license object
     'licenses',
