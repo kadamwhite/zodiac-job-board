@@ -1,13 +1,14 @@
 {
-  "name": "vue-experiments",
+  "name": "zodiac-job-board",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Interactive visualization of FF12 Job Board combinations",
   "author": "K. Adam White <kadamwhite@users.noreply.github.com>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
+    "release": "./release-gh-pages.sh",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs"

@@ -1,6 +1,6 @@
-# vue-experiments
+# Zodiac Job Board
 
-> A Vue.js project
+> Interactive visualization of FF12 Job Board combinations
 
 ## Build Setup
 
