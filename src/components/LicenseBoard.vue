@@ -7,10 +7,16 @@
           :key="col"
           :class="[
             { license: hasLicense(col, row) },
+            { selected: isSelected(license(col, row)) },
             licenseClass(col, row),
           ]"
+          @mouseover="select(license(col, row))"
+          @click="select(license(col, row))"
         >
-          <div class="label">
+          <div
+            v-if="hasLicense(col, row)"
+            class="label"
+          >
             {{ license(col, row).name }}
           </div>
         </td>
@@ -29,10 +35,33 @@ export default {
     // Dictionary of cells to their corresponding license object
     'licenses',
   ],
+  data() {
+    return {
+      selectedLicense: null,
+      selectedCategory: '',
+    };
+  },
   methods: {
     letter: id => letters[id],
     cell(col, row) {
       return `${this.letter(col - 1)}${row}`;
+    },
+    isSelected(license) {
+      if (!license) {
+        return false;
+      }
+      if (license.id === this.selectedLicense) {
+        return true;
+      }
+      return false;
+    },
+    select(license) {
+      if (!license) {
+        return;
+      }
+      console.log(license);
+      this.selectedLicense = license.id;
+      this.selectedCategory = license.category;
     },
     hasLicense(col, row) {
       // returning license(cell) to a v-if caused an error, which this
@@ -70,14 +99,21 @@ table {
 td {
   width: 2em;
   vertical-align: center;
+  position: relative;
 }
 td .label {
-  height: 3em;
+  box-sizing: border-box;
+  min-width: 100%;
+  min-height: 3em;
   display: inline-block;
   vertical-align: center;
 }
 td.license {
+  box-sizing: border-box;
   border: 1px solid;
+}
+td.license.selected .label {
+  border: 2px solid black;
 }
 td.quickening {
   background: rgba(0,255,0,0.2);
