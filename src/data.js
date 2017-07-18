@@ -1,6 +1,6 @@
-import licenses from './data/licenses';
+import licenseList from './data/licenses';
 
-export const licenseList = licenses;
+export const licenses = licenseList;
 
 export const licenseDict = licenses.reduce((dict, license, idx) => ({
   ...dict,
@@ -60,7 +60,7 @@ export const jobs = [
 }));
 
 window.data = {
-  licenseList,
+  licenses,
   licenseDict,
   byCategory,
   jobs,

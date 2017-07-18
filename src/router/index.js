@@ -1,7 +1,8 @@
-import Vue from 'vue';
 import Router from 'vue-router';
+import Vue from 'vue';
 import Hello from '@/components/Hello';
-import LicenseCategories from '@/components/LicenseCategories';
+import LicenseCategoriesHorizontal from '@/components/LicenseCategoriesHorizontal';
+import SingleBoard from '@/components/SingleBoard';
 import Jobs from '@/components/Jobs';
 
 Vue.use(Router);
@@ -24,9 +25,14 @@ export default new Router({
       component: Jobs,
     },
     {
+      path: '/board/:id',
+      name: 'Job License Board',
+      component: SingleBoard,
+    },
+    {
       path: '/categories',
       name: 'Job License Categories',
-      component: LicenseCategories,
+      component: LicenseCategoriesHorizontal,
     },
   ],
 });

@@ -14,7 +14,7 @@
       ]">
         <span
           v-for="id in ids"
-          :key="`${category}${id}`"
+          :key="`${ category }${ id }`"
           :class="[
             'license',
             { selected: isSelected(id) },
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import categories from '../data/categories';
+import { categories } from '../data/categories';
 import { getLicense } from '../data';
 
 
@@ -56,7 +56,7 @@ export default {
     licenseLabel() {
       const { name, skills } = this.selectedLicense;
       return skills && skills.length ?
-        `${name} (${skills.join(', ')})` :
+        `${ name } (${ skills.join(', ') })` :
         name;
     },
   },

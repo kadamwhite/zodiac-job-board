@@ -30,6 +30,7 @@ module.exports = {
       vars: 'all', args: 'after-used',
     }],
     'space-before-function-paren': ['error', 'never'],
+    'template-curly-spacing': ['error', 'always'],
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       'js': 'never',

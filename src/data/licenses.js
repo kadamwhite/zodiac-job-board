@@ -16,6 +16,16 @@
  *         }, {}),
  *       skills: tr.querySelector('td:nth-of-type(4)').innerText.split(/,\s+/),
  *     }));
+ *
+ * Typos corrected:
+ *
+ * - Bushi has Martyr at "I11", not "Ill"
+ * - Black Mage has Poach at N8, not "Poach"
+ *
+ * Other resources:
+ * - http://www.eurogamer.net/articles/2017-07-18-final-fantasy-12-the-zodiac-age-zodiac-license-board-best-jobs-characters-gambits-explained-4112
+ * - https://docs.google.com/spreadsheets/d/1WQNQH4jslioGHBtQ6a8dd37Z4uPHCk3-sWWEteugIg0/edit#gid=1671067184
+ * - http://finalfantasy.wikia.com/wiki/Black_Mage_(Final_Fantasy_XII) (individual boards)
  */
 /* eslint-disable */
 module.exports = [
@@ -67,7 +77,7 @@ module.exports = [
 	{"name":"First Aid","category":"Technick","lp":"20","board":{"Uhlan":"C14","Knight":"E10","Monk":"I2","Archer":"K8","Shikari":"E7"},"skills":["First Aid"]},
 	{"name":"Charge","category":"Technick","lp":"30","board":{"White Mage":"J6","Red Battlemage":"H10","Time Battlemage":"I3","Black Mage":"K13"},"skills":["Charge"]},
 	{"name":"Horology","category":"Technick","lp":"50","board":{"Machinist":"K12","Time Battlemage":"D7","Foebreaker":"L7"},"skills":["Horology"]},
-	{"name":"Poach","category":"Technick","lp":"30","board":{"Uhlan":"D2","Machinist":"L3","Time Battlemage":"L3","Archer":"K6","Black Mage":"Poach"},"skills":["Poach"]},
+	{"name":"Poach","category":"Technick","lp":"30","board":{"Uhlan":"D2","Machinist":"L3","Time Battlemage":"L3","Archer":"K6","Black Mage":"N8"},"skills":["Poach"]},
 	{"name":"Souleater","category":"Technick","lp":"35","board":{"White Mage":"D16","Uhlan":"K16","Red Battlemage":"P15","Knight":"C2","Monk":"F15","Bushi":"I2"},"skills":["Souleater"]},
 	{"name":"Infuse","category":"Technick","lp":"30","board":{"Uhlan":"E6","Knight":"B12","Foebreaker":"H4","Archer":"A9","Bushi":"N9"},"skills":["Infuse"]},
 	{"name":"1000 Needles","category":"Technick","lp":"40","board":{"Archer":"A10","Bushi":"R7","Shikari":"L15"},"skills":["1000 Needles"]},
@@ -120,7 +130,7 @@ module.exports = [
 	{"name":"Inquisitor","category":"Augment","lp":"30","board":{"White Mage":"F4","Uhlan":"D15","Machinist":"J5","Red Battlemage":"K13","Knight":"D8","Monk":"F2","Time Battlemage":"N10","Foebreaker":"F7","Archer":"M10","Black Mage":"L12","Bushi":"I5","Shikari":"F12"},"skills":["Gain MP after dealing damage."]},
 	{"name":"Warmage","category":"Augment","lp":"30","board":{"White Mage":"M8","Red Battlemage":"K10","Time Battlemage":"G3","Black Mage":"K11"},"skills":["Gain MP after dealing magick damage."]},
 	{"name":"Headsman","category":"Augment","lp":"30","board":{"White Mage":"M5","Uhlan":"E5","Machinist":"M5","Red Battlemage":"N16","Knight":"E2","Monk":"C8","Time Battlemage":"E4","Foebreaker":"F11","Archer":"N9","Black Mage":"P14","Bushi":"M5","Shikari":"C10"},"skills":["Gain MP after defeating a foe."]},
-	{"name":"Martyr","category":"Augment","lp":"30","board":{"White Mage":"H13","Uhlan":"B11","Machinist":"E4","Red Battlemage":"F4","Knight":"D4","Monk":"G2","Time Battlemage":"K10","Foebreaker":"G3","Archer":"M9","Black Mage":"L6","Bushi":"Ill","Shikari":"E8"},"skills":["Gain MP after taking damage."]},
+	{"name":"Martyr","category":"Augment","lp":"30","board":{"White Mage":"H13","Uhlan":"B11","Machinist":"E4","Red Battlemage":"F4","Knight":"D4","Monk":"G2","Time Battlemage":"K10","Foebreaker":"G3","Archer":"M9","Black Mage":"L6","Bushi":"I11","Shikari":"E8"},"skills":["Gain MP after taking damage."]},
 	{"name":"Swiftness","category":"Augment","lp":"30","board":{"White Mage":"N8","Uhlan":"E3","Machinist":"N12","Red Battlemage":"M15","Knight":"M14","Monk":"N9","Time Battlemage":"H4","Foebreaker":"C13","Archer":"N10","Black Mage":"M17","Bushi":"I6","Shikari":"D4"},"skills":["Reduces action time by 10%."]},
 	{"name":"Swiftness","category":"Augment","lp":"50","board":{"White Mage":"D7","Uhlan":"I3","Machinist":"O13","Monk":"Q12","Time Battlemage":"F11","Foebreaker":"F1","Archer":"K17","Black Mage":"O17","Bushi":"K5","Shikari":"D15"},"skills":["Reduces action time by 10%."]},
 	{"name":"Swiftness","category":"Augment","lp":"80","board":{"Machinist":"Q13","Monk":"Q13","Time Battlemage":"B11","Foebreaker":"O8","Archer":"H16","Bushi":"G18","Shikari":"L14"},"skills":["Reduces action time by 10%."]},

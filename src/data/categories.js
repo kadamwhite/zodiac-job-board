@@ -1,5 +1,8 @@
+import { scaleOrdinal } from 'd3-scale';
+import { schemeSet3 } from 'd3-scale-chromatic';
+
 /* eslint-disable */
-module.exports = {
+export const categories = {
   Comand: [0],
   'White Magick':  [1,2,3,4,5,6,7,8,9,10,11,12,13],
   'Black Magick':  [14,15,16,17,18,19,20,21,22,23,24,25,26],
@@ -46,8 +49,8 @@ module.exports = {
   // 'Bows': [214,215,216,217,218,219,220,221],
   //   'Dhanusa': [222],
   // 'Spears': [223,224,225,226,227,228],
-  // 'Vrsahba': [229],
-  // 'Zodiac Spear': [230],
+  //   'Vrsahba': [229],
+  //   'Zodiac Spear': [230],
   // 'Axes & Hammers': [231,232,233,234,235,236,237],
   //   'Vrscika': [238],
   // 'Katana': [239,240,241,242,243,244],
@@ -75,4 +78,131 @@ module.exports = {
   Gambit: [121,122,123,124,125,126,127,128,129,130],
   Summon: [307,308,309,310,311,312,313,314,315,316,317,318,319],
   Quickening: [320,321,322,323]
+};
+/* eslint-enable */
+
+// See http://www.rpgsite.net/feature/5799-final-fantasy-xii-the-zodiac-age-weapons-ultimate-weapons-how-to-get-them
+const ultimateWeaponIds = {
+  211: 'Simha',
+  213: 'Karkata',
+  222: 'Dhanusa',
+  229: 'Vrsahba',
+  230: 'Zodiac Spear',
+  238: 'Vrscika',
+  245: 'Kumbha',
+  279: 'Mina',
+  286: 'Mithuna',
+  294: 'Kanya',
+  298: 'Tula',
+  302: 'Makara',
+  306: 'Mesa',
+};
+/**
+ * Determine which ultimate weapons are accessible with the provided license IDs
+ *
+ * @param {number[]} ids Array of license IDs
+ * @returns {string[]} Array of weapon names
+ */
+export const ultimateWeapons = ids => ids
+  .filter(id => Boolean(ultimateWeaponIds[id]))
+  .map(id => ultimateWeaponIds[id]);
+
+export const isUltimateWeapon = id =>
+  [211, 213, 222, 229, 230, 238, 245, 279, 286, 294, 298, 302, 306].includes(id);
+
+const categoryCache = {};
+export const getCategory = (id) => {
+  if (categoryCache[id]) {
+    return categoryCache[id];
+  }
+  const cats = Object.keys(categories);
+  for (let i = 0; i < cats.length; i += 1) {
+    if (categories[cats[i]].includes(id)) {
+      categoryCache[id] = cats[i];
+      return cats[i];
+    }
+  }
+  console.error(`Cannot find category for id ${ id }!`);
+  return '';
+};
+
+export const getMetaCategory = (category) => {
+  switch (category) {
+    case 'Black Magick':
+    case 'Arcane Magick':
+      return 'Black Magick';
+    case 'Time Magick':
+    case 'Green Magick':
+      return 'Support Magick';
+    case 'HP Augments':
+    case 'Battle Lore':
+    case 'Magick Lore':
+    case 'Shield Augments':
+    case 'Misc Augments':
+    case 'Swiftness Augments':
+    case 'Channeling Augments':
+    case 'Item Augments':
+      return 'Augments';
+    case 'Light Armor':
+    case 'Heavy Armor':
+    case 'Mystic Armor':
+    case 'Genji Armor':
+      return 'Armor';
+    case 'Swords':
+    case 'Bows':
+    case 'Spears':
+    case 'Axes & Hammers':
+    case 'Katana':
+    case 'Greatswords':
+    case 'Rods':
+    case 'Staves':
+    case 'Maces':
+    case 'Measures':
+    case 'Daggers':
+    case 'Guns':
+    case 'Poles':
+    case 'Crossbows':
+    case 'Hand-bombs':
+    case 'Ninja Swords':
+      return 'Weapons';
+    default:
+      return category;
+  }
+};
+export const metaCategories = Object.keys(categories)
+  .map(cat => getMetaCategory(cat))
+  .reduce((unique, cat) => (
+    unique.includes(cat) ? unique : unique.concat(cat)
+  ), []);
+
+const colorScale = scaleOrdinal(schemeSet3);
+const cellColorCache = {};
+export const categoryColor = (category) => {
+  let color;
+  if (category === 'White Magick') {
+    return '#fff';
+  } else if (category === 'Black Magick') {
+    return '#555';
+  } else if (category === 'Summon') {
+    color = 'rgba(146, 0, 169, 0.4)'; // #9200a9
+  } else if (category === 'Quickening') {
+    color = 'rgba(169, 0, 35, 0.4)';// #a90023
+  } else {
+    color = colorScale(getMetaCategory(category));
+  }
+  return color;
+};
+export const cellCategoryColor = (id) => {
+  if (cellColorCache[id]) {
+    return cellColorCache[id];
+  }
+  const category = getCategory(id);
+  let color;
+  if (isUltimateWeapon(id)) {
+    color = 'red';
+  } else {
+    color = categoryColor(category);
+  }
+  cellColorCache[id] = color;
+  return color;
 };
