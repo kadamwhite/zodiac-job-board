@@ -4,9 +4,16 @@
     <div class="job-select">
       <div class="checklist">
         <h2>Select Jobs</h2>
-        <div v-for="job in jobs" :key="job.name">
-          <input type="checkbox" :id="job.name" :value="job.name" v-model="checkedNames">
+        <div v-for="(job, id) in jobs" :key="job.name">
+          <input type="checkbox" :id="job.name" :value="id" v-model="checkedNames">
           <label :for="job.name">{{ job.name }}</label>
+        </div>
+      </div>
+      <div class="checklist">
+        <h2>Select Espers</h2>
+        <div v-for="summon in summons" :key="summon.name">
+          <input type="checkbox" :id="`summon${summon.name}`" :value="summon.id" v-model="checkedSummons">
+          <label :for="`summon${summon.name}`">{{ summon.name }}</label>
         </div>
       </div>
       <div class="checklist">
@@ -18,32 +25,33 @@
         </ul>
         <p v-else>Please select one or more jobs</p>
       </div>
-    </div>
-    <div class="categories">
-      <h2>License Access {{(accessibleLicensePct * 100).toFixed(2)}}%</h2>
-      <license-categories :active="activeLicenses" />
-    </div><!--
-    --><div class="boards">
-      <div class="color-key">
-        <span v-for="cat in metaCategories" :key="cat">
+      <div class="checklist color-key">
+        <h2>Color Key</h2>
+        <span class="color" v-for="cat in metaCategories" :key="cat">
           <svg width="0.8em" height="0.8em" viewBox="0 0 100 100">
             <rect width="100" height="100" :fill="categoryColor(cat)" />
           </svg> {{cat}}
         </span>
-        <span>
-          <svg width="1em" height="1em" viewBox="0 0 100 100">
+        <span class="color">
+          <svg width="0.8em" height="0.8em" viewBox="0 0 100 100">
             <rect width="100" height="100" fill="red" />
           </svg> Ultimate Weapon
         </span>
       </div>
+    </div>
+    <div class="categories">
+      <h2>License Access {{(accessibleLicensePct * 100).toFixed(2)}}%</h2>
+      <license-categories :active="activeLicenses" @select="onSelect" />
+    </div><!--
+    --><div class="boards">
       <div
-        v-for="job in jobs"
+        v-for="(job, id) in jobs"
         :key="job.name"
-        v-if="checkedNames.includes(job.name) || checkedNames.length === 0"
+        v-if="checkedNames.includes(id) || checkedNames.length === 0"
         class="job"
       >
         <h2>{{ job.name }}</h2>
-        <license-board :licenses="job.board" />
+        <license-board :licenses="job.board" :unlocks="checkedSummons" />
       </div>
     </div>
   </div>
@@ -51,7 +59,7 @@
 
 <script>
 import uniq from 'lodash.uniq';
-import { jobs, licenses } from '../data';
+import { jobs, summons, licenses } from '../data';
 import { ultimateWeapons, metaCategories, categoryColor } from '../data/categories';
 import LicenseBoard from './LicenseBoard';
 import LicenseCategories from './LicenseCategoriesHorizontal';
@@ -65,14 +73,18 @@ export default {
   data() {
     return {
       checkedNames: [],
+      checkedSummons: [],
+      selectedLicense: null,
+      selectedCategory: '',
       metaCategories,
+      summons,
       jobs,
     };
   },
   computed: {
     activeLicenses() {
-      return uniq(jobs
-        .filter(job => this.checkedNames.includes(job.name))
+      return uniq(this.checkedNames
+        .map(id => jobs[id])
         .reduce((ids, job) => ids.concat(Object.values(job.board)), []));
     },
     accessibleLicensePct() {
@@ -84,13 +96,17 @@ export default {
   },
   methods: {
     categoryColor: category => categoryColor(category),
+    onSelect(category, id) {
+      this.selectedCategory = category;
+      this.selectedLicense = id;
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
+h1, h2, h3 {
   font-weight: normal;
 }
 
@@ -100,6 +116,7 @@ h1, h2 {
 .checklist {
   display: inline-block;
   vertical-align: top;
+  max-width: 25%;
   padding-right: 3em;
 }
 
@@ -109,17 +126,20 @@ h1, h2 {
 .color-key svg {
   border: 1px solid black;
 }
+.color {
+  display: block;
+  white-space: nowrap;
+}
 
 .categories,
 .boards {
+  width: 100%;
   display: inline-block;
   vertical-align: top;
 }
-.categories {
-  width: 33%;
-}
-.boards {
-  width: 66%;
+@media (min-width: 768px) {
+  .categories { width: 33%; }
+  .boards { width: 66%; }
 }
 
 .job {

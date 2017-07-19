@@ -24,6 +24,7 @@
             { active: isActive(id) },
           ]"
           @mouseover="select(category, id)"
+          @click="select(category, id)"
         >
           <span v-if="false && isActive(id)">#</span>
         </div>
@@ -71,6 +72,7 @@ export default {
     select(category, id) {
       this.selectedCategory = category;
       this.selectedLicense = getLicense(id);
+      this.$emit('select', category, this.selectedLicense);
     },
     isSelected(id) {
       return this.selectedLicense === getLicense(id);

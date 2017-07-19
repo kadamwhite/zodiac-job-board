@@ -3,7 +3,7 @@
   <svg
     class="license-board"
     shape-rendering="geometricPrecision"
-    :viewBox="`0 0 ${cellEdge * 18 + 6} ${cellEdge * 18 + 6}`"
+    :viewBox="`0 0 ${cellEdge * 18 + 6} ${cellEdge * 19 + 6}`"
   >
     <g transform="translate(3,3)">
       <g
@@ -14,13 +14,23 @@
         <rect
           :class="[
             'cell',
-            { unlock: isUnlock(id) },
+            { unlock: isUnlock(id) && !isUnlocked(id) },
           ]"
           x="0"
           y="0"
           :width="cellEdge"
           :height="cellEdge"
           :fill="color(id)"
+        />
+        <rect
+          :class="[
+            'cell-border',
+            { unlock: isUnlock(id) },
+          ]"
+          x="0"
+          y="0"
+          :width="cellEdge"
+          :height="cellEdge"
         />
         <text
           v-if="isUnlock(id)"
@@ -37,7 +47,7 @@
 
 <script>
 import { getLicense } from '../data';
-import { getCategory, cellCategoryColor } from '../data/categories';
+import { getCategory, isUnlock, cellCategoryColor } from '../data/categories';
 
 const letters = 'ABCDEFGHIJKLMNOPQR';
 const licenseCache = {};
@@ -47,6 +57,8 @@ export default {
   props: [
     // Dictionary of cells to their corresponding license object
     'licenses',
+    // IDs of unlocked optional cells (mostly summons)
+    'unlocks',
   ],
   computed: {
     cells() {
@@ -78,8 +90,10 @@ export default {
       return getCategory(id);
     },
     isUnlock(id) {
-      const category = this.category(id);
-      return category === 'Summon' || category === 'Quickening';
+      return isUnlock(this.category(id));
+    },
+    isUnlocked(id) {
+      return this.unlocks.includes(id);
     },
     color: id => cellCategoryColor(id),
     cell(col, row) {
@@ -124,20 +138,30 @@ export default {
 }
 
 .cell {
-  stroke: black;
-  stroke-width: 1px;
-  transition: stroke-width 100ms;
+  stroke-width: 0;
+  transition: opacity 100ms;
 }
 .cell.unlock {
-  stroke-dasharray: 2, 2;
+  opacity: 0;
 }
-.cell.selected,
-.cell:hover {
+.cell-border {
+  stroke: black;
+  stroke-width: 1px;
+  fill: transparent;
+  transition: stroke-width 100ms;
+}
+.cell-border.unlock {
+  stroke-dasharray: 2, 5;
+  stroke-width: 2px;
+}
+.cell-border.selected,
+.cell-border:hover {
   stroke-width: 4px;
   stroke-dasharray: 1, 0;
 }
 
 text {
+  pointer-events: none;
   font-size: 20px;
   font-weight: bold;
   text-anchor: middle;

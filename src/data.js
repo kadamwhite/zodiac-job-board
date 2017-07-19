@@ -1,6 +1,9 @@
 import licenseList from './data/licenses';
 
-export const licenses = licenseList;
+export const licenses = licenseList.map((license, idx) => ({
+  ...license,
+  id: idx,
+}));
 
 export const licenseDict = licenses.reduce((dict, license, idx) => ({
   ...dict,
@@ -58,6 +61,8 @@ export const jobs = [
     return board;
   }, {}),
 }));
+
+export const summons = licenses.filter(license => license.category === 'Summon');
 
 window.data = {
   licenses,

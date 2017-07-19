@@ -3,7 +3,7 @@ import { schemeSet3 } from 'd3-scale-chromatic';
 
 /* eslint-disable */
 export const categories = {
-  Comand: [0],
+  Command: [0],
   'White Magick':  [1,2,3,4,5,6,7,8,9,10,11,12,13],
   'Black Magick':  [14,15,16,17,18,19,20,21,22,23,24,25,26],
   'Time Magick':   [27,28,29,30,31,32,33,34,35,36],
@@ -175,6 +175,8 @@ export const metaCategories = Object.keys(categories)
     unique.includes(cat) ? unique : unique.concat(cat)
   ), []);
 
+export const isUnlock = category => category === 'Quickening' || category === 'Summon';
+
 const colorScale = scaleOrdinal(schemeSet3);
 const cellColorCache = {};
 export const categoryColor = (category) => {
@@ -184,9 +186,9 @@ export const categoryColor = (category) => {
   } else if (category === 'Black Magick') {
     return '#555';
   } else if (category === 'Summon') {
-    color = 'rgba(146, 0, 169, 0.4)'; // #9200a9
+    color = '#9200a9'; // 'rgba(146, 0, 169, 0.4)';
   } else if (category === 'Quickening') {
-    color = 'rgba(169, 0, 35, 0.4)';// #a90023
+    color = '#a90023'; // 'rgba(169, 0, 35, 0.4)';
   } else {
     color = colorScale(getMetaCategory(category));
   }
