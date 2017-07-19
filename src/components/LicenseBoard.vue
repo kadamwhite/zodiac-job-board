@@ -22,9 +22,23 @@
           :height="cellEdge"
           :fill="color(id)"
         />
+        <text
+          v-if="isUnlock(id)"
+          :x="cellEdge / 2"
+          :y="cellEdge / 2"
+        >
+          {{ category(id).substr(0, 1) }}
+        </text>
+      </g>
+      <g
+        v-for="(id, cell) in cells"
+        :key="cell"
+        :transform="translate(cell, id)"
+      >
         <rect
           :class="[
             'cell-border',
+            { selected: isSelected(id) },
             { unlock: isUnlock(id) },
           ]"
           x="0"
@@ -33,13 +47,6 @@
           :height="cellEdge"
           @mouseover="select(id)"
         />
-        <text
-          v-if="isUnlock(id)"
-          :x="cellEdge / 2"
-          :y="cellEdge / 2"
-        >
-          {{ category(id).substr(0, 1) }}
-        </text>
       </g>
     </g>
   </svg>
@@ -60,69 +67,36 @@ export default {
     'licenses',
     // IDs of unlocked optional cells (mostly summons)
     'unlocks',
+    // Selected ID
+    'selectedId',
   ],
+  data() {
+    return {
+      cellEdge: 50,
+    };
+  },
   computed: {
     cells() {
       return this.licenses;
     },
   },
-  data() {
-    return {
-      selectedLicense: null,
-      cellEdge: 50,
-    };
-  },
   methods: {
-    letter: id => letters[id],
-    getPosition: cell => ({
-      x: letters.indexOf(cell.substr(0, 1)),
-      y: +cell.substr(1) - 1,
-    }),
-    translate(cell, id) {
-      const { x, y } = this.getPosition(cell);
-      if (isNaN(y * this.cellEdge)) {
-        console.log(id, getLicense(id));
-        console.log(cell, x, y);
-      }
+    translate(cell) {
+      const x = letters.indexOf(cell.substr(0, 1));
+      const y = +cell.substr(1) - 1;
       return `translate(${ x * this.cellEdge },${ y * this.cellEdge })`;
     },
-    category(id) {
-      return getCategory(id);
-    },
-    isUnlock(id) {
-      return isUnlock(this.category(id));
-    },
+    category: id => getCategory(id),
+    isUnlock: id => isUnlock(getCategory(id)),
     isUnlocked(id) {
       return this.unlocks.includes(id);
     },
     color: id => cellCategoryColor(id),
-    cell(col, row) {
-      return `${ this.letter(col - 1) }${ row }`;
-    },
-    isSelected(license) {
-      if (!license) {
-        return false;
-      }
-      if (license.id === this.selectedLicense) {
-        return true;
-      }
-      return false;
+    isSelected(id) {
+      return id === this.selectedId;
     },
     select(id) {
-      this.selectedLicense = id;
       this.$emit('select', id);
-    },
-    licenseClass(col, row) {
-      // return this.license(id)
-      return this.license(col, row).category.toLowerCase();
-    },
-    license(id) {
-      // Technicall we're duplicating the cache inside /data... prob superfluous...
-      if (licenseCache[id]) {
-        return licenseCache[id];
-      }
-      licenseCache[id] = getLicense(id);
-      return licenseCache[id];
     },
   },
 };
@@ -151,9 +125,9 @@ export default {
   stroke-dasharray: 2, 5;
   stroke-width: 2px;
 }
-.cell-border.selected,
-.cell-border:hover {
-  stroke-width: 4px;
+.cell-border.selected {
+  z-index: 10;
+  stroke-width: 6px;
   stroke-dasharray: 1, 0;
 }
 

@@ -31,7 +31,7 @@
       <h2>License Access {{(accessibleLicensePct * 100).toFixed(2)}}%</h2>
       <license-categories
         :active="activeLicenses"
-        :selected="selectedLicense"
+        :selectedId="selectedId"
         @select="onSelect"
       />
     </div><!--
@@ -46,7 +46,7 @@
         <license-board
           :licenses="job.board"
           :unlocks="checkedSummons"
-          :selected="selectedLicense"
+          :selectedId="selectedId"
           @select="onSelect"
         />
       </div>
@@ -75,7 +75,7 @@ export default {
     return {
       checkedNames: [],
       checkedSummons: [],
-      selectedLicense: null,
+      selectedId: null,
       summons,
       jobs,
     };
@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     onSelect(id) {
-      this.selectedLicense = id;
+      this.selectedId = id;
     },
   },
 };

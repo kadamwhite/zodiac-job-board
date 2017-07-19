@@ -1,6 +1,6 @@
 <template>
   <div class="license-categories">
-    <selected-license :id="selectedLicense" />
+    <selected-license :id="selectedId" />
     <div class="container">
       <div
         v-for="(ids, category) in categories"
@@ -38,6 +38,9 @@ export default {
     SelectedLicense,
   },
   props: {
+    selectedId: {
+      default: null,
+    },
     active: {
       // Array of licenses that should be considered "active"
       default() {
@@ -48,16 +51,14 @@ export default {
   data() {
     return {
       categories,
-      selectedLicense: null,
     };
   },
   methods: {
     select(id) {
-      this.selectedLicense = id;
       this.$emit('select', id);
     },
     isSelected(id) {
-      return this.selectedLicense === id;
+      return this.selectedId === id;
     },
     isActive(id) {
       return (this.active || []).includes(id);
