@@ -139,6 +139,11 @@ h1, h2, h3 {
   .boards { width: 66%; }
 }
 
+.boards {
+  max-height: 100vh;
+  overflow: scroll;
+}
+
 .job {
   display: inline-block;
   width: 100%;
