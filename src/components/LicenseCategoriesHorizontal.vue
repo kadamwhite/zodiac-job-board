@@ -1,11 +1,6 @@
 <template>
   <div class="license-categories">
-    <p class="selected-license">
-      <template v-if="selectedCategory">
-        <strong>{{ selectedCategory }}:</strong> {{ licenseLabel }}
-      </template>
-      <template v-else>&nbsp;</template>
-    </p>
+    <selected-license :id="selectedLicense" />
     <div class="container">
       <div
         v-for="(ids, category) in categories"
@@ -34,11 +29,14 @@
 </template>
 
 <script>
-import { categories, getCategory } from '../data/categories';
-import { getLicense } from '../data';
+import { categories } from '../data/categories';
+import SelectedLicense from './SelectedLicense';
 
 export default {
   name: 'license-categories-horizontal',
+  components: {
+    SelectedLicense,
+  },
   props: {
     active: {
       // Array of licenses that should be considered "active"
@@ -52,20 +50,6 @@ export default {
       categories,
       selectedLicense: null,
     };
-  },
-  computed: {
-    selectedCategory() {
-      return getCategory(this.selectedLicense);
-    },
-    licenseLabel() {
-      if (!this.selectedLicense && this.selectedLicense !== 0) {
-        return '';
-      }
-      const { name, skills } = getLicense(this.selectedLicense);
-      return skills && skills.length ?
-        `${ name } (${ skills.join(', ') })` :
-        name;
-    },
   },
   methods: {
     select(id) {
