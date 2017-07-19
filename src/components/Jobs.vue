@@ -41,7 +41,11 @@
     </div>
     <div class="categories">
       <h2>License Access {{(accessibleLicensePct * 100).toFixed(2)}}%</h2>
-      <license-categories :active="activeLicenses" @select="onSelect" />
+      <license-categories
+        :active="activeLicenses"
+        :selected="selectedLicense"
+        @select="onSelect"
+      />
     </div><!--
     --><div class="boards">
       <div
@@ -51,7 +55,12 @@
         class="job"
       >
         <h2>{{ job.name }}</h2>
-        <license-board :licenses="job.board" :unlocks="checkedSummons" />
+        <license-board
+          :licenses="job.board"
+          :unlocks="checkedSummons"
+          :selected="selectedLicense"
+          @select="onSelect"
+        />
       </div>
     </div>
   </div>
@@ -75,7 +84,6 @@ export default {
       checkedNames: [],
       checkedSummons: [],
       selectedLicense: null,
-      selectedCategory: '',
       metaCategories,
       summons,
       jobs,
@@ -96,8 +104,7 @@ export default {
   },
   methods: {
     categoryColor: category => categoryColor(category),
-    onSelect(category, id) {
-      this.selectedCategory = category;
+    onSelect(id) {
       this.selectedLicense = id;
     },
   },

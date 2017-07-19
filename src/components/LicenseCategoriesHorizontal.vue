@@ -23,8 +23,8 @@
             { selected: isSelected(id) },
             { active: isActive(id) },
           ]"
-          @mouseover="select(category, id)"
-          @click="select(category, id)"
+          @mouseover="select(id)"
+          @click="select(id)"
         >
           <span v-if="false && isActive(id)">#</span>
         </div>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { categories } from '../data/categories';
+import { categories, getCategory } from '../data/categories';
 import { getLicense } from '../data';
 
 export default {
@@ -51,31 +51,29 @@ export default {
     return {
       categories,
       selectedLicense: null,
-      selectedCategory: '',
     };
   },
   computed: {
-    categoryLabel() {
-      return this.selectedCategory;
+    selectedCategory() {
+      return getCategory(this.selectedLicense);
     },
     licenseLabel() {
-      if (!this.selectedLicense) {
+      if (!this.selectedLicense && this.selectedLicense !== 0) {
         return '';
       }
-      const { name, skills } = this.selectedLicense;
+      const { name, skills } = getLicense(this.selectedLicense);
       return skills && skills.length ?
         `${ name } (${ skills.join(', ') })` :
         name;
     },
   },
   methods: {
-    select(category, id) {
-      this.selectedCategory = category;
-      this.selectedLicense = getLicense(id);
-      this.$emit('select', category, this.selectedLicense);
+    select(id) {
+      this.selectedLicense = id;
+      this.$emit('select', id);
     },
     isSelected(id) {
-      return this.selectedLicense === getLicense(id);
+      return this.selectedLicense === id;
     },
     isActive(id) {
       return (this.active || []).includes(id);

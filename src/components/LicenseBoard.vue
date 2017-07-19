@@ -31,6 +31,7 @@
           y="0"
           :width="cellEdge"
           :height="cellEdge"
+          @mouseover="select(id)"
         />
         <text
           v-if="isUnlock(id)"
@@ -68,7 +69,6 @@ export default {
   data() {
     return {
       selectedLicense: null,
-      selectedCategory: '',
       cellEdge: 50,
     };
   },
@@ -108,12 +108,9 @@ export default {
       }
       return false;
     },
-    select(license) {
-      if (!license) {
-        return;
-      }
-      this.selectedLicense = license.id;
-      this.selectedCategory = license.category;
+    select(id) {
+      this.selectedLicense = id;
+      this.$emit('select', id);
     },
     licenseClass(col, row) {
       // return this.license(id)

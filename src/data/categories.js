@@ -112,6 +112,9 @@ export const isUltimateWeapon = id =>
 
 const categoryCache = {};
 export const getCategory = (id) => {
+  if (!id && id !== 0) {
+    return '';
+  }
   if (categoryCache[id]) {
     return categoryCache[id];
   }
