@@ -1,6 +1,6 @@
 <template>
   <div class="license-categories">
-    <selected-license :id="selectedId" />
+    <slot /><selected-license :id="selectedId" />
     <div class="container">
       <div
         v-for="(ids, category) in categories"
@@ -19,7 +19,7 @@
             { active: isActive(id) },
           ]"
           @mouseover="select(id)"
-          @click="select(id)"
+          @click="select(id, true)"
         >
           <span v-if="false && isActive(id)">#</span>
         </div>
@@ -47,6 +47,10 @@ export default {
         return [];
       },
     },
+    frozen: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -54,8 +58,12 @@ export default {
     };
   },
   methods: {
-    select(id) {
-      this.$emit('select', id);
+    select(id, freeze) {
+      if (!freeze && this.frozen) {
+        // When frozen, only permit selections that freeze a new value
+        return;
+      }
+      this.$emit('select', id, freeze);
     },
     isSelected(id) {
       return this.selectedId === id;

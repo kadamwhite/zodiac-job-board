@@ -32,8 +32,11 @@
       <license-categories
         :active="activeLicenses"
         :selectedId="selectedId"
+        :frozen="frozen"
         @select="onSelect"
-      />
+      >
+        <button class="unfreeze" v-if="frozen" @click="unfreeze">&times;</button>
+      </license-categories>
     </div><!--
     --><div class="boards">
       <div
@@ -47,6 +50,7 @@
           :licenses="job.board"
           :unlocks="checkedSummons"
           :selectedId="selectedId"
+          :frozen="frozen"
           @select="onSelect"
         />
       </div>
@@ -76,6 +80,7 @@ export default {
       checkedNames: [],
       checkedSummons: [],
       selectedId: null,
+      frozen: false,
       summons,
       jobs,
     };
@@ -94,9 +99,29 @@ export default {
     },
   },
   methods: {
-    onSelect(id) {
+    onSelect(id, freeze) {
       this.selectedId = id;
+      console.log(id, freeze);
+      if (freeze) {
+        this.frozen = true;
+      }
     },
+    unfreeze() {
+      this.frozen = false;
+    },
+    onKeyUp(event) {
+      // escape key
+      if (event.keyCode == 27) {
+        this.unfreeze();
+      }
+    },
+  },
+  mounted() {
+    this.onKeyUp = this.onKeyUp.bind(this);
+    window.addEventListener('keyup', this.onKeyUp);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.onKeyUp);
   },
 };
 </script>
@@ -117,15 +142,9 @@ h1, h2, h3 {
   padding-right: 3em;
 }
 
-.color-key {
-  text-align: left;
-}
-.color-key svg {
-  border: 1px solid black;
-}
-.color {
-  display: block;
-  white-space: nowrap;
+.unfreeze {
+  float: left;
+  margin-right: 1em;
 }
 
 .categories,

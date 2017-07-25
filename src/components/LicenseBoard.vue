@@ -46,6 +46,7 @@
           :width="cellEdge"
           :height="cellEdge"
           @mouseover="select(id)"
+          @click="select(id, true)"
         />
       </g>
     </g>
@@ -54,11 +55,9 @@
 </template>
 
 <script>
-import { getLicense } from '../data';
 import { getCategory, isUnlock, cellCategoryColor } from '../data/categories';
 
 const letters = 'ABCDEFGHIJKLMNOPQR';
-const licenseCache = {};
 
 export default {
   name: 'license-boards',
@@ -69,6 +68,7 @@ export default {
     'unlocks',
     // Selected ID
     'selectedId',
+    'frozen',
   ],
   data() {
     return {
@@ -95,8 +95,13 @@ export default {
     isSelected(id) {
       return id === this.selectedId;
     },
-    select(id) {
-      this.$emit('select', id);
+    select(id, freeze) {
+      console.log(freeze, this.frozen);
+      if (!freeze && this.frozen) {
+        // When frozen, only permit selections that freeze a new value
+        return;
+      }
+      this.$emit('select', id, freeze);
     },
   },
 };
